@@ -129,6 +129,7 @@ for($obc = 0; $obc < count($commands); ++$obc) {
 	}
 }
 function CountSimilarities($name1, $name2) {
+	$scoring = 0;
 	for($ob = 1; $ob <= strlen($name2); ++$ob) {
 		for($ob2 = 0; $ob2 <= strlen($name2) - $ob; ++$ob2) {
 			$search = substr($name2, $ob2, $ob);
@@ -256,6 +257,9 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			$score2 = $scoring2['score'];
 			if(strlen($first1) == strlen($first2)) {
 				$score2 = $score2 + 0.1;
+				if(strlen($last1) == strlen($last2)) {
+					$score1 = $score1 + 0.2;
+				}
 			}
 			if($first1 == $first2) {
 				$score2 = 3 * $score2;
