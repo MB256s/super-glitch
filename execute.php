@@ -128,7 +128,7 @@ for($obc = 0; $obc < count($commands); ++$obc) {
 		break;
 	}
 }
-function CountSimilarities($name1, $name2, $scoring, $finalsum) {
+function CountSimilarities($name1, $name2) {
 	for($ob = 1; $ob <= strlen($name2); ++$ob) {
 		for($ob2 = 0; $ob2 <= strlen($name2) - $ob; ++$ob2) {
 			$search = substr($name2, $ob2, $ob);
@@ -157,6 +157,7 @@ function CountSimilarities($name1, $name2, $scoring, $finalsum) {
 			}
 		}
 	}
+	return array('score' => $scoring, 'points' => $finalsum);
 }
 $debug = ['*', '#', '/', '!'];
 $debug2 = ["*", "#", "/", "!", "&", ".", ",", ":", ";", "$", "?", "@", "€", "£", "'", "§"];
@@ -246,17 +247,15 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			$last1 = substr($text, strpos($text, ' ') + 1, $plus - strpos($text, ' ') - 1);
 			$first2 = substr($text, $plus + 1, strrpos($text, ' ') - $plus - 1);
 			$last2 = substr($text, strrpos($text, ' ') + 1, -2);
-			$superbonus = 0;
-			$dump = 0;
-			$score1 = 0;
-			CountSimilarities($last1, $last2, $score1, $superbonus);
+			$scoring1 = CountSimilarities($last1, $last2);
+			$score1 = $scoring1['score'];
 			if(strlen($last1) == strlen($last2)) {
 				$score1 = $score1 + 0.1;
 			}
-			$score2 = 0;
-			CountSimilarities($first1, $first2, $score2, $superbonus);
+			$scoring2 = CountSimilarities($first1, $first2);
+			$score2 = $scoring2['score'];
 			if(strlen($first1) == strlen($first2)) {
-				$score1 = $score1 + 0.1;
+				$score2 = $score2 + 0.1;
 			}
 			if($first1 == $first2) {
 				$score2 = 3 * $score2;
@@ -272,11 +271,9 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			} else {
 				$answer = $score2 + 5 * $score1;
 			}
-			$score3 = 0;
-			CountSimilarities($last1, $first2, $score3, $dump);
-			$score4 = 0;
-			CountSimilarities($first1, $last2, $score4, $dump);
-			$answer = $answer + 0.1 * floor($superbonus + 0.5) + 0.1 * $score3 + 0.1 * $score4 + 0.1 * floor(0.01 * $dump + 0.5);
+			$score3 = CountSimilarities($last1, $first2)['score'];
+			$score4 = CountSimilarities($first1, $last2)['score'];
+			$answer = $answer + 0.1 * floor($scoring1['points'] + $scoring2['points'] + 0.5) + 0.1 * $score3 + 0.1 * $score4;
 			$answer = $answer . "%";
 		} elseif($rand2 == 16 && substr($text, 1, 1) == 'a') {
 			$answer = (101 + $chatId) * $rand + $date;
