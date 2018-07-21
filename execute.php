@@ -128,6 +128,36 @@ for($obc = 0; $obc < count($commands); ++$obc) {
 		break;
 	}
 }
+function CountSimilarities($name1, $name2, $scoring, $finalsum) {
+	for($ob = 1; $ob <= strlen($name2); ++$ob) {
+		for($ob2 = 0; $ob2 <= strlen($name2) - $ob; ++$ob2) {
+			$search = substr($name2, $ob2, $ob);
+			$value = array();
+			$ob3 = 0;
+			while(strpos(substr($name1, $ob3), $search) !== false) {
+				$value1 = strpos(substr($name1, $ob3), $search) + $ob3;
+				array_push($value, $value1);
+				$ob3 = $value1 + 1;
+			}
+			if(count($value) != 0) {
+				$score = $ob;
+				if(in_array($ob2, $value)) {
+					$score = 1.5 * $score;
+				}
+				if(in_array($ob2 + strlen($name1) - strlen($name2), $value)) {
+					$score = 1.2 * $score;
+				}
+				if($search == $name1 || $search == $name2) {
+					$score = 2 * $score;
+				}
+				$finalsum = $finalsum + ($ob - 1) * $score * count($value) / $ob;
+				if($scoring < $score) {
+					$scoring = $score;
+				}
+			}
+		}
+	}
+}
 $debug = ['*', '#', '/', '!'];
 $debug2 = ["*", "#", "/", "!", "&", ".", ",", ":", ";", "$", "?", "@", "€", "£", "'", "§"];
 if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1) == 's' && strlen($text) == 21 && $chatId % 32 == $rand2) {
@@ -217,67 +247,14 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			$first2 = substr($text, $plus + 1, strrpos($text, ' ') - $plus - 1);
 			$last2 = substr($text, strrpos($text, ' ') + 1, -2);
 			$superbonus = 0;
+			$dump = 0;
 			$score1 = 0;
-			for($ob = 1; $ob <= strlen($last2); ++$ob) {
-				for($ob2 = 0; $ob2 <= strlen($last2) - $ob; ++$ob2) {
-					$search = substr($last2, $ob2, $ob);
-					$value = array();
-					$ob3 = 0;
-					while(strpos(substr($last1, $ob3), $search) !== false) {
-						$value1 = strpos(substr($last1, $ob3), $search) + $ob3;
-						array_push($value, $value1);
-						$ob3 = $value1 + 1;
-					}
-					if(count($value) != 0) {
-						$score = $ob;
-						if(in_array($ob2, $value)) {
-							$score = 1.5 * $score;
-						}
-						if(in_array($ob2 + strlen($last1) - strlen($last2), $value)) {
-							$score = 1.2 * $score;
-						}
-						if($search == $last1 || $search == $last2) {
-							$score = 2 * $score;
-						}
-						$superbonus = $superbonus + ($ob - 1) * $score * count($value) / $ob;
-						if($score1 < $score) {
-							$score1 = $score;
-						}
-					}
-				}
-			}
+			CountSimilarities($last1, $last2, $score1, $superbonus);
 			if(strlen($last1) == strlen($last2)) {
 				$score1 = $score1 + 0.1;
 			}
 			$score2 = 0;
-			for($ob = 1; $ob <= strlen($first2); ++$ob) {
-				for($ob2 = 0; $ob2 <= strlen($first2) - $ob; ++$ob2) {
-					$search = substr($first2, $ob2, $ob);
-					$value = array();
-					$ob3 = 0;
-					while(strpos(substr($first1, $ob3), $search) !== false) {
-						$value1 = strpos(substr($first1, $ob3), $search) + $ob3;
-						array_push($value, $value1);
-						$ob3 = $value1 + 1;
-					}
-					if(count($value) != 0) {
-						$score = $ob;
-						if(in_array($ob2, $value)) {
-							$score = 1.5 * $score;
-						}
-						if(in_array($ob2 + strlen($first1) - strlen($first2), $value)) {
-							$score = 1.2 * $score;
-						}
-						if($search == $first1 || $search == $first2) {
-							$score = 2 * $score;
-						}
-						$superbonus = $superbonus + ($ob - 1) * $score * count($value) / $ob;
-						if($score2 < $score) {
-							$score2 = $score;
-						}
-					}
-				}
-			}
+			CountSimilarities($first1, $first2, $score2, $superbonus);
 			if(strlen($first1) == strlen($first2)) {
 				$score1 = $score1 + 0.1;
 			}
@@ -295,7 +272,11 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			} else {
 				$answer = $score2 + 5 * $score1;
 			}
-			$answer = $answer + 0.1 * floor($superbonus + 0.5);
+			$score3 = 0;
+			CountSimilarities($last1, $first2, $score3, $dump);
+			$score4 = 0;
+			CountSimilarities($first1, $last2, $score4, $dump);
+			$answer = $answer + 0.1 * floor($superbonus + 0.5) + 0.1 * $score3 + 0.1 * $score4 + 0.1 * floor(0.01 * $dump + 0.5);
 			$answer = $answer . "%";
 		} elseif($rand2 == 16 && substr($text, 1, 1) == 'a') {
 			$answer = (101 + $chatId) * $rand + $date;
