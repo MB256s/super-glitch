@@ -220,10 +220,16 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			for($ob = 1; $ob <= strlen($last2); ++$ob) {
 				for($ob2 = 0; $ob2 <= strlen($last2) - $ob; ++$ob2) {
 					$search = substr($last2, $ob2, $ob);
-					$value = strpos($last1, $search);
-					if($value !== false) {
+					$value = array();
+					$ob3 = 0;
+					while(strpos(substr($last1, $ob3), $search) !== false) {
+						$value1 = strpos(substr($last1, $ob3), $search) + $ob3;
+						array_push($value, $value1);
+						$ob3 = strpos(substr($last1, $ob3), $search) + 1;
+					}
+					if($value != []) {
 						$score = $ob;
-						if($value == $ob2) {
+						if(in_array($ob2,$value)) {
 							$score = 3 * $ob / 2;
 						}
 						if($search == $last1 || $search == $last2) {
