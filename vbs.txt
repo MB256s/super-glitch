@@ -1,0 +1,38 @@
+nes = msgbox ("This game isn't safe. Do you want to proceded?",20,"Flying dices")
+
+if nes = VbYes then
+
+msgbox "Please install FreeOTFE",16,"FreeOTFE installer"
+
+msgbox "Error Code:0x0063C420",16,"Fatal Error"
+
+msgbox "UN TROJAN HORSE HA DANNEGGIATO IL COMPUTER. VUOI RIMUOVERLO?",20,"Trojan horse"
+
+msgbox "Vuoi fare il debug?",20,"Debugger"
+
+msgbox "FATAL ERROR",16,"PC CRASHED"
+
+snes = msgbox ("Vuoi installare Windows ME?",20,"Installare Windows ME")
+
+if snes = VbYes then
+
+msgbox "Impossibile Installare Windows ME",16,"Errore 001"
+
+msgbox "Critical Error!",16,"Error 173.28mX"
+
+' Ciclo for
+For i=1 to 12
+msgbox "Windows" & VbNewLine & "A fatal excempion 0E has occurred at 002B:C0011E36 in VXD VMM0100010." & VbNewLine & "The current application will be terminated." & VbNewLine & "Press OK to continue.",4112,"FATAL ERROR 173.28mX"
+next
+
+else
+
+msgbox "HAI INSTALLATO WINDOWS 98 SE",0,"INSTALLAZIONE COMPLETATA"
+
+end if
+
+else
+
+msgbox "HAI INSTALLATO WINDOWS 98 SE",0,"INSTALLAZIONE COMPLETATA"
+
+end if
