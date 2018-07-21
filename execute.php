@@ -225,7 +225,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 					while(strpos(substr($last1, $ob3), $search) !== false) {
 						$value1 = strpos(substr($last1, $ob3), $search) + $ob3;
 						array_push($value, $value1);
-						$ob3 = strpos(substr($last1, $ob3), $search) + 1;
+						$ob3 = $value1 + 1;
 					}
 					if(count($value) != 0) {
 						$score = $ob;
@@ -253,7 +253,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 					while(strpos(substr($first1, $ob3), $search) !== false) {
 						$value1 = strpos(substr($first1, $ob3), $search) + $ob3;
 						array_push($value, $value1);
-						$ob3 = strpos(substr($first1, $ob3), $search) + 1;
+						$ob3 = $value1 + 1;
 					}
 					if(count($value) != 0) {
 						$score = $ob;
