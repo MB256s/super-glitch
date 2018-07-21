@@ -273,7 +273,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			}
 			$score3 = CountSimilarities($last1, $first2)['score'];
 			$score4 = CountSimilarities($first1, $last2)['score'];
-			$answer = $answer + 0.1 * floor($scoring1['points'] + $scoring2['points'] + 0.5) + 0.1 * $score3 + 0.1 * $score4;
+			$answer = $answer + 0.1 * floor($scoring1['points'] + $scoring2['points'] + $score3 + $score4 + 0.5);
 			$answer = $answer . "%";
 		} elseif($rand2 == 16 && substr($text, 1, 1) == 'a') {
 			$answer = (101 + $chatId) * $rand + $date;
