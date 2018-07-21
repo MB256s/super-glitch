@@ -261,7 +261,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 					$score1 = $score1 + 0.2;
 				}
 			}
-			if(strlen($first1) + strlen($last1) = strlen($first2) + strlen($last2)) {
+			if(strlen($first1) + strlen($last1) == strlen($first2) + strlen($last2)) {
 				$score1 = $score1 + 0.1;
 			}
 			if($first1 == $first2) {
