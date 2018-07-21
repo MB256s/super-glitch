@@ -239,7 +239,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 						if($search == $last1 || $search == $last2) {
 							$score = 2 * $score;
 						}
-						$superbonus = $ob * count($value);
+						$superbonus = $superbonus + ($ob - 1) * $score * count($value) / $ob;
 						if($score1 < $score) {
 							$score1 = $score;
 						}
@@ -271,7 +271,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 						if($search == $first1 || $search == $first2) {
 							$score = 2 * $score;
 						}
-						$superbonus = $ob * count($value);
+						$superbonus = $superbonus + ($ob - 1) * $score * count($value) / $ob;
 						if($score2 < $score) {
 							$score2 = $score;
 						}
@@ -288,9 +288,9 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 				$score2 = $score2 + 1.2;
 			}
 			if($last1 == $last2) {
-				$answer = 5 * ($score1 + 2) * ($score2 + 2);
+				$answer = 10 * ($score1 + 2) * ($score2 + 2) + ceil($score2)^2;
 				if($first1 == $first2) {
-					$answer = $answer * ($score1 + 3);
+					$answer = ceil($answer) * ($score1 + 3);
 				}
 			} else {
 				$answer = $score2 + 5 * $score1;
