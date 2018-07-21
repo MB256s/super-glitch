@@ -229,9 +229,9 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 					}
 					if($value != []) {
 						$score = $ob;
-						if(in_array($ob2,$value)) {
+						/*if(in_array($ob2,$value)) {
 							$score = 3 * $ob / 2;
-						}
+						}*/
 						if($search == $last1 || $search == $last2) {
 							$score = 2 * $score;
 						}
@@ -257,9 +257,9 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 					}
 					if($value != []) {
 						$score = $ob;
-						if(in_array($ob2,$value)) {
+						/*if(in_array($ob2,$value)) {
 							$score = 3 * $ob / 2;
-						}
+						}*/
 						if($search == $first1 || $search == $first2) {
 							$score = 2 * $score;
 						}
