@@ -216,6 +216,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			$last1 = substr($text, strpos($text, ' ') + 1, $plus - strpos($text, ' ') - 1);
 			$first2 = substr($text, $plus + 1, strrpos($text, ' ') - $plus - 1);
 			$last2 = substr($text, strrpos($text, ' ') + 1, -2);
+			$superbonus = 0;
 			$score1 = 0;
 			for($ob = 1; $ob <= strlen($last2); ++$ob) {
 				for($ob2 = 0; $ob2 <= strlen($last2) - $ob; ++$ob2) {
@@ -230,11 +231,15 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 					if(count($value) != 0) {
 						$score = $ob;
 						if(in_array($ob2, $value)) {
-							$score = 3 * $ob / 2;
+							$score = 1.5 * $score;
+						}
+						if(in_array($ob2 + strlen($last1) - strlen($last2), $value)) {
+							$score = 1.2 * $score;
 						}
 						if($search == $last1 || $search == $last2) {
 							$score = 2 * $score;
 						}
+						$superbonus = $ob * count($value);
 						if($score1 < $score) {
 							$score1 = $score;
 						}
@@ -242,7 +247,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 				}
 			}
 			if(strlen($last1) == strlen($last2)) {
-				$score1 = $score1 + 1;
+				$score1 = $score1 + 0.1;
 			}
 			$score2 = 0;
 			for($ob = 1; $ob <= strlen($first2); ++$ob) {
@@ -258,22 +263,29 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 					if(count($value) != 0) {
 						$score = $ob;
 						if(in_array($ob2, $value)) {
-							$score = 3 * $ob / 2;
+							$score = 1.5 * $score;
+						}
+						if(in_array($ob2 + strlen($first1) - strlen($first2), $value)) {
+							$score = 1.2 * $score;
 						}
 						if($search == $first1 || $search == $first2) {
 							$score = 2 * $score;
 						}
+						$superbonus = $ob * count($value);
 						if($score2 < $score) {
 							$score2 = $score;
 						}
 					}
 				}
 			}
-			if($last1 == $first2 || $last2 == $first1) {
-				$score2 = $score2 + 10;
+			if(strlen($first1) == strlen($first2)) {
+				$score1 = $score1 + 0.1;
 			}
 			if($first1 == $first2) {
-				$score2 = $score2 + 1;
+				$score2 = 3 * $score2;
+			}
+			if($last1 == $first2 || $last2 == $first1) {
+				$score2 = $score2 + 1.2;
 			}
 			if($last1 == $last2) {
 				$answer = 5 * ($score1 + 2) * ($score2 + 2);
@@ -283,6 +295,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			} else {
 				$answer = $score2 + 5 * $score1;
 			}
+			$answer = $answer + 0.1 * floor($superbonus + 0.5);
 			$answer = $answer . "%";
 		} elseif($rand2 == 16 && substr($text, 1, 1) == 'a') {
 			$answer = (101 + $chatId) * $rand + $date;
