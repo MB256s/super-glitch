@@ -222,8 +222,8 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 	} elseif(strlen($text) > 0 && substr($text, -1, 1) == '?') {
 		$answer = $gommasaggia[$rand2];
 	} elseif($plus !== false && strlen($text) < 197) {
-		if(strlen($text) == 8 && preg_match("#^[0-9]+$#", substr($text, 5, 3))){
-			if(substr($text, 1, 1) == 'a'){
+		if(strlen($text) == 8 && preg_match("#^[0-9]+$#", substr($text, 5, 3)) && $plus == 0){
+			if(substr($text, 1, 1) == 'a' || $date % 10 == 3){
 				$answer = rand(1, substr($text, 5, 3) + 1) / 10;
 			} else {
 				$answer = rand(0, substr($text, 5, 3) + 1) / 10;
