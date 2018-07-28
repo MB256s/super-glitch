@@ -222,7 +222,14 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 	} elseif(strlen($text) > 0 && substr($text, -1, 1) == '?') {
 		$answer = $gommasaggia[$rand2];
 	} elseif($plus !== false && strlen($text) < 197) {
-		if($plus == strrpos($text, '+') && $plus != strlen($text) - 1 && $plus !== 0) {
+		if(strlen($text) == 8 && preg_match("#^[0-9]+$#", substr($text, 5, 3))){
+			if(substr($text, 1, 1) == 'a'){
+				$answer = rand(1, substr($text, 5, 3) + 1) / 10;
+			} else {
+				$answer = rand(0, substr($text, 5, 3) + 1) / 10;
+			}
+			$answer = $answer . "%";
+		} elseif($plus == strrpos($text, '+') && $plus != strlen($text) - 1 && $plus !== 0) {
 			$score = 0;
 			for($ob = 0; $ob < strlen($text); ++$ob) {
 				$lett = substr($text, $ob, 1);
@@ -281,6 +288,9 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			$score3 = CountSimilarities($last1, $first2)['score'];
 			$score4 = CountSimilarities($first1, $last2)['score'];
 			$answer = $answer + 0.1 * floor($scoring1['points'] + $scoring2['points'] + $score3 + $score4 + 0.5);
+			if(strlen($last1) == strlen($last2) && strlen($first1) == strlen($first2) && $answer < 15){
+				$answer = 15;
+			}
 			$answer = $answer . "%";
 		} elseif($rand2 == 16 && substr($text, 1, 1) == 'a') {
 			$answer = (101 + $chatId) * $rand + $date;
