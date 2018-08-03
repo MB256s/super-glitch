@@ -118,7 +118,8 @@ $greco = [
 'z' => 'ζ',
 '?' => ';',
 ];
-$commands = ['spam', 'moneta', 'vbsscript', 'greco'];
+$card = ['n', 'a', '3', 'r', 'c', 'f', '7', '6', '5', '4', '2'];
+$commands = ['spam', 'moneta', 'vbsscript', 'greco', 'chiama'];
 $commcheck = false;
 for($obc = 0; $obc < count($commands); ++$obc) {
 	$comm = $commands[$obc];
@@ -298,6 +299,64 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		} else {
 			$answer = $rand . "%";
 		}
+	} elseif(substr($text, 0, 8) == '/chiama ') {
+		if(strlen($text) == 9 && in_array(substr($text, 8), $card)) {
+			$cards = [
+			'n' => array(30, 35, 25, 6, 2, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+			'a' => array(33, 0, 31, 21, 12, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+			'3' => array(38, 0, 0, 34, 18, 8, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+			'r' => array(45, 0, 0, 0, 30, 15, 6, 2, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+			'c' => array(50, 0, 0, 0, 0, 30, 10, 5, 3, 1, 1, 0, 0, 0, 0, 0, 0, 0),
+			'f' => array(52, 0, 0, 0, 0, 0, 28, 12, 5, 2, 1, 0, 0, 0, 0, 0, 0, 0),
+			'7' => array(56, 0, 0, 0, 0, 0, 0, 25, 12, 4, 2, 0, 0, 0, 0, 0, 0, 1),
+			'6' => array(60, 0, 0, 0, 0, 0, 0, 0, 20, 15, 4, 0, 0, 0, 0, 0, 0, 1),
+			'5' => array(62, 0, 0, 0, 0, 0, 0, 0, 0, 19, 16, 2, 0, 0, 0, 0, 0, 1),
+			'4' => array(65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 5, 1, 0, 0, 0, 0, 1),
+			'2' => array(70, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 8, 1, 3, 1, 1, 1),
+			];
+			$distr = $cards[substr($text, 8)];
+			$chiamate = ['Passo', 'Asso', 'Tre', 'Re', 'Cavallo', 'Fante', 'Sette', 'Sei', 'Cinque', 'Quattro', 'Due', 'Due a 62', 'Due a 63', 'Due a 64', 'Due a 65', 'Due a 66', 'Due a 70', 'CHIAMO CARICHI!!!'];
+			for($ob = 0; $ob < 18; ++$ob) {
+				for($ob2 = 0; $ob2 < $distr[$ob]; ++$ob2) {
+					$chiamatecarta[] = $chiamate[$ob];
+				}
+			}
+			$answer = $chiamatecarta[$rand - 1];
+			if($answer != 'Passo' && $answer != 'CHIAMO CARICHI!!!') {
+				$answer = 'Chiamo ' . $answer;
+			}
+		} elseif(preg_match("#^[0-9]+$#", substr($text, 8)) && substr($text, 8) > 61 && substr($text, 8) <= 120) {
+			$score = substr($text, 8);
+			$chiamate = ['Passo', 1, 2, 3, 4, 5, 10, 'CHIAMO CARICHI!!!'];
+			if($score < 80) {
+				$distr = array(72, 20, 5, 2, 0, 0, 0, 1);
+			} else {
+				$distr = array(75, 12, 6, 1, 1, 2, 1, 2);
+			}
+			for($ob = 0; $ob < 8; ++$ob) {
+				for($ob2 = 0; $ob2 < $distr[$ob]; ++$ob2) {
+					$chiamatecarta[] = $chiamate[$ob];
+				}
+			}
+			$choice = $chiamatecarta[$rand - 1];
+			if(gettype($choice) != "integer") {
+				$answer = $choice;
+			} else {
+				$score = $score + $choice;
+				if($score > 120) {
+					$answer = 'CHIAMO CARICHI!!!';
+				} else {
+					$answer = 'Chiamo Due a ' . $score;
+				}
+			}
+		} elseif($text == '/chiama seme') {
+			$chiamate = ['Bastoni', 'Coppe', 'Denari', 'Spade'];
+			$choice = $rand2 % 4;
+			$answer = 'La briscola è' . $chiamate[$choice];
+		}
+		if($date + $chatId + $rand + $rand2 % 500 == 76 && $text != '/chiama seme' && $rand != $rand2 && $answer != 'Chiamo Due a 62') {
+			$answer = 'CHIAMO CARICHI!!!';
+		}
 	/*} elseif($checker == "#" && strlen($text) == 7 && strlen($texthex) == 6) {
 		$red = hexdec(substr($text, 1, 2));
 		$green = hexdec(substr($text, 3, 2));
@@ -352,6 +411,16 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		}
 	} elseif($debugnumb == "56044") {
 		$answer = $rand . "%";
+	} elseif($debugnumb == "61120") {
+		$chiamate = ['Passo', 'Asso', 'Tre', 'Re', 'Cavallo', 'Fante', 'Sette', 'Sei', 'Cinque', 'Quattro', 'Due', 1, 'CHIAMO CARICHI!!!'];
+		shuffle($chiamate);
+		$answer = $chiamate[$rand2 % 5];
+		if($answer == 1) {
+			$answer = 'Due a ' . rand(62, 120);
+		}
+		if($answer != 'Passo' && $answer != 'CHIAMO CARICHI!!!') {
+			$answer = 'Chiamo ' . $answer;
+		}
 	/*} elseif($debugnumb == "77216") {
 			$img = imagecreatetruecolor(432, 243);
 			if($rand + $rand2 % 3 == 1) {
