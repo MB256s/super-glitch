@@ -445,6 +445,11 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 	} elseif($debugnumb == "79256") {
 		$answer = $firstname . ' ' . $lastname . ' accendi la luce';
 	}
+} elseif($text == "/esadecimale") {
+	$answer = dechex($rand2 % 16);
+	for($ob = 1; $ob < 4096; ++$ob) {
+		$answer = $answer . dechex(rand(0, 15));
+	}
 }
 
 /*if($img) {
