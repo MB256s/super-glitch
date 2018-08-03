@@ -184,7 +184,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 				}
 			}
 			if($answer == 'set o = Wscript.CreateObject("Wscript.Shell")' . $enter . 'o.Run "notepad"' . $timeshift){
-				$answer ='';
+				$answer = '';
 			}
 		}
 	} elseif(substr($text, 0, 7) == "/greco " && strlen($text) > 7 && strlen($text) <= 520 && substr($text, 7, 1) != ' ') {
@@ -315,6 +315,10 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			'2' => array(70, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 8, 1, 3, 1, 1, 1),
 			];
 			$distr = $cards[substr($text, 8)];
+			if($date % 10 == 3) {
+				$distr[1] = $distr[0] + $distr[1];
+				$distr[0] = 0;
+			}
 			$chiamate = ['Passo', 'Asso', 'Tre', 'Re', 'Cavallo', 'Fante', 'Sette', 'Sei', 'Cinque', 'Quattro', 'Due', 'Due a 62', 'Due a 63', 'Due a 64', 'Due a 65', 'Due a 66', 'Due a 70', 'CHIAMO CARICHI!!!'];
 			for($ob = 0; $ob < 18; ++$ob) {
 				for($ob2 = 0; $ob2 < $distr[$ob]; ++$ob2) {
@@ -332,6 +336,10 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 				$distr = array(72, 20, 5, 2, 0, 0, 0, 1);
 			} else {
 				$distr = array(75, 12, 6, 1, 1, 2, 1, 2);
+			}
+			if($date % 10 == 3) {
+				$distr[1] = $distr[0] + $distr[1];
+				$distr[0] = 0;
 			}
 			for($ob = 0; $ob < 8; ++$ob) {
 				for($ob2 = 0; $ob2 < $distr[$ob]; ++$ob2) {
@@ -352,7 +360,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		} elseif($text == '/chiama seme') {
 			$chiamate = ['Bastoni', 'Coppe', 'Denari', 'Spade'];
 			$choice = $rand2 % 4;
-			$answer = 'La briscola è' . $chiamate[$choice];
+			$answer = 'La briscola è ' . $chiamate[$choice];
 		}
 		if($date + $chatId + $rand + $rand2 % 500 == 76 && $text != '/chiama seme' && $rand != $rand2 && $answer != 'Chiamo Due a 62') {
 			$answer = 'CHIAMO CARICHI!!!';
