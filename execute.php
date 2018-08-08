@@ -316,8 +316,15 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			];
 			$distr = $cards[substr($text, 8)];
 			if($date % 10 == 3) {
-				$distr[1] = $distr[0] + $distr[1];
-				$distr[0] = 0;
+				$ob = 1;
+				do {
+					$pppp = $distr[$ob];
+					$distr[$ob] = $distr[$ob - 1] + $distr[$ob];
+					$distr[$ob - 1] = 0;
+					++$ob;
+				} while ($pppp == 0);
+				/*--$distr[$ob - 1];
+				++$distr[17];*/
 			}
 			$chiamate = ['Passo', 'Asso', 'Tre', 'Re', 'Cavallo', 'Fante', 'Sette', 'Sei', 'Cinque', 'Quattro', 'Due', 'Due a 62', 'Due a 63', 'Due a 64', 'Due a 65', 'Due a 66', 'Due a 70', 'CHIAMO CARICHI!!!'];
 			for($ob = 0; $ob < 18; ++$ob) {
