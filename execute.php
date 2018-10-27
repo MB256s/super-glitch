@@ -247,7 +247,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 						$length = $listlength[$ob2];
 						$score0 = $score;
 					} elseif ($score == $score0) {
-						$final[] = ['--------'];
+						$final[] = '--------';
 						$final = array_merge($final, $temp);
 						$base = $base . '/' . ($ob2 + 1);
 						$ratio = $ratio . '/' . $ob3;
