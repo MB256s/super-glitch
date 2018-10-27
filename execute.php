@@ -119,7 +119,7 @@ $greco = [
 '?' => ';',
 ];
 $card = ['n', 'a', '3', 'r', 'c', 'f', '7', '6', '5', '4', '2'];
-$commands = ['spam', 'moneta', 'vbsscript', 'greco', 'chiama'];
+$commands = ['spam', 'moneta', 'vbsscript ', 'greco ', 'chiama '];
 $commcheck = false;
 for($obc = 0; $obc < count($commands); ++$obc) {
 	$comm = $commands[$obc];
@@ -219,6 +219,50 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		}
 		if(strlen($answer) - $malus < strlen($text) * 3 / 5 || $date % 386 == 286) {
 			$answer = "σπαμσπαμσπαμσπαμ";
+		}
+	} elseif(substr($text, 0, 2) == "%&" && strlen($text) > 6) {
+		if (substr($text, 2, 2) == ';/') {
+			$list = explode("\r\n", $text);
+			$ob = 1;
+			while (array_key_exists($ob, $list)) {
+				$listlength[] = strlen($list[$ob]);
+				++$ob;
+			}
+			$score0 = 0;
+			$final = [];
+			for($ob2 = 0; $ob2 < $ob - 2; ++$ob2) {
+				for($ob3 = 1; $ob3 < $ob - $ob2 - 1; ++$ob3) {
+					$score = 1;
+					$obtemp = $ob2;
+					$temp = [$list[$ob2 + 1]];
+					while($listlength[$ob2] === $listlength[$obtemp + $ob3]) {
+						++$score;
+						$obtemp = $obtemp + $ob3;
+						$temp[] = $list[$obtemp + 1];
+					}
+					if ($score > $score0) {
+						$final = $temp;
+						$base = $ob2 + 1;
+						$ratio = $ob3;
+						$length = $listlength[$ob2];
+						$score0 = $score;
+					} elseif ($score == $score0) {
+						$final[] = ['--------'];
+						$final = array_merge($final, $temp);
+						$base = $base . '/' . ($ob2 + 1);
+						$ratio = $ratio . '/' . $ob3;
+						$length = $length . '/' . $listlength[$ob2];
+					}
+				}
+			}
+			$answer = implode("\r\n", $final) . "\r\n" . "Base $base; ragione $ratio; lunghezza $score0; $length caratteri";
+			if (strlen($answer) > 4096) {
+				$answer = $base . "\r\n" . $ratio . "\r\n" . $score0 . "\r\n" . $length;
+			}
+		} else {
+			$spam = fopen('spam.txt', 'r');
+			$answer = fread($spam, 3996);
+			fclose($spam);
 		}
 	} elseif(strlen($text) > 0 && substr($text, -1, 1) == '?') {
 		$answer = $gommasaggia[$rand2];
