@@ -50,6 +50,12 @@ function SetTheMessage($chatId, $answer) {
 	$output = curl_exec($ch);
 }*/
 $plus = strpos($text, '+');
+$unstressed = array('Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C',
+'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O',
+'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a',
+'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
+'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'Ğ'=>'G', 'İ'=>'I', 'Ş'=>'S', 'ğ'=>'g',
+'ı'=>'i', 'ş'=>'s', 'ü'=>'u');
 $gommasaggia = array('Assolutamente sì', 'Sì', 'Sì', 'Sì', 'Sì', 'Sì', 'Sì', 'Sì', 'Sì', 'Sì', 'Sì', 'Sì', 'No', 'No', 'No', 'No', 'No', 'No', 'No', 'No', 'No', 'No', 'No', 'Assolutamente no', 'Forse', 'Forse', 'Chi lo sa?', 'Può essere', 'Non sono affari tuoi', 'Non sono affari tuoi', 'Non sono affari tuoi', 'JOHN CENA!!!');
 $affin = [
 'a' => 17,
@@ -220,9 +226,9 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		if(strlen($answer) - $malus < strlen($text) * 3 / 5 || $date % 386 == 286) {
 			$answer = "σπαμσπαμσπαμσπαμ";
 		}
-	} elseif(substr($text, 0, 2) == "%&" && strlen($text) > 6) {
+	} elseif(substr($text, 0, 2) == "%&" && strlen($text) > 7) {
 		if (substr($text, 2, 2) == ';/') {
-			$list = explode("\n", $textmsc);
+			$list = explode("\n", strtr($textmsc, $unstressed));
 			$ob = 1;
 			while (array_key_exists($ob, $list)) {
 				$listlength[] = strlen($list[$ob]);
@@ -246,7 +252,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 						$ratio = $ob3;
 						$length = $listlength[$ob2];
 						$score0 = $score;
-					} elseif ($score == $score0) {
+					} elseif ($score == $score0 && $score > 1) {
 						$final[] = '--------';
 						$final = array_merge($final, $temp);
 						$base = $base . '/' . ($ob2 + 1);
@@ -254,6 +260,15 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 						$length = $length . '/' . $listlength[$ob2];
 					}
 				}
+				if ($score0 == 1 && $ob2 != 0) {
+					$final[] = '--------';
+					$final[] = $list[$ob2 + 1];
+					$length = $length . '/' . $listlength[$ob2];
+				}
+			}
+			if ($score0 == 1) {
+				$base = 0;
+				$ratio = 0;
 			}
 			$answer = implode("\r\n", $final) . "\r\n" . "\r\n" . "Base $base; ragione $ratio; lunghezza $score0; $length caratteri";
 			if (strlen($answer) > 4096) {
@@ -427,7 +442,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		$answer = "Dettagli non disponibili";
 	} elseif($rand == 79) {
 		$answer = $firstname . ' ' . $lastname . ' accendi la luce';
-	} elseif($text == "superspam" || substr($text, 1, 1) == 'a' || $date % 10 == 3 || strlen($text) >= 197 || strpos($text, 'delirio') !== false || substr($text, 0, 5) == "/spam") {
+	} elseif($text == "superspam" || substr(strtr($text, $unstressed), 1, 1) == 'a' || $date % 10 == 3 || strlen($text) >= 197 || strpos($text, 'delirio') !== false || substr($text, 0, 5) == "/spam") {
 		$spam = fopen('spam.txt', 'r');
 		$answer = fread($spam, 3996);
 		fclose($spam);
