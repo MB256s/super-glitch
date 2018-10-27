@@ -222,7 +222,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		}
 	} elseif(substr($text, 0, 2) == "%&" && strlen($text) > 6) {
 		if (substr($text, 2, 2) == ';/') {
-			$list = explode("\n", $text);
+			$list = explode("\n", $textmsc);
 			$ob = 1;
 			while (array_key_exists($ob, $list)) {
 				$listlength[] = strlen($list[$ob]);
@@ -255,7 +255,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 					}
 				}
 			}
-			$answer = implode("\r\n", $final) . "\r\n" . "Base $base; ragione $ratio; lunghezza $score0; $length caratteri";
+			$answer = implode("\r\n", $final) . "\r\n" . "\r\n" . "Base $base; ragione $ratio; lunghezza $score0; $length caratteri";
 			if (strlen($answer) > 4096) {
 				$answer = $base . "\r\n" . $ratio . "\r\n" . $score0 . "\r\n" . $length;
 			}
