@@ -222,7 +222,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		}
 	} elseif(substr($text, 0, 2) == "%&" && strlen($text) > 6) {
 		if (substr($text, 2, 2) == ';/') {
-			$list = explode("\r\n", $text);
+			$list = explode("\n", $text);
 			$ob = 1;
 			while (array_key_exists($ob, $list)) {
 				$listlength[] = strlen($list[$ob]);
