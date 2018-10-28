@@ -262,7 +262,9 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 					}
 				}
 				if ($score0 == 1) {
-					$final[] = '--------';
+					if ($ob2 != 0) {
+						$final[] = '--------';
+					}
 					$final[] = $list[$ob2 + 1];
 					$length = $length . '/' . $listlength[$ob2];
 				}
