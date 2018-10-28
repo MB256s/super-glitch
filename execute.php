@@ -194,6 +194,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			}
 		}
 	} elseif(substr($text, 0, 7) == "/greco " && strlen($text) > 7 && strlen($text) <= 520 && substr($text, 7, 1) != ' ') {
+		$text = strtr($text, $unstressed);
 		$text = str_ireplace('ch', 'χ', $text);
 		$text = str_ireplace('th', 'θ', $text);
 		$text = str_ireplace('ps', 'ψ', $text);
@@ -234,7 +235,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 				$listlength[] = strlen($list[$ob]);
 				++$ob;
 			}
-			$score0 = 0;
+			$score0 = 1;
 			$final = [];
 			for($ob2 = 0; $ob2 < $ob - 2; ++$ob2) {
 				for($ob3 = 1; $ob3 < $ob - $ob2 - 1; ++$ob3) {
@@ -260,7 +261,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 						$length = $length . '/' . $listlength[$ob2];
 					}
 				}
-				if ($score0 == 1 && $ob2 != 0) {
+				if ($score0 == 1) {
 					$final[] = '--------';
 					$final[] = $list[$ob2 + 1];
 					$length = $length . '/' . $listlength[$ob2];
@@ -269,8 +270,11 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			if ($score0 == 1) {
 				$base = 0;
 				$ratio = 0;
+				$final[] = '--------';
+				$final[] = $list[$ob - 1];
+				$length = $length . '/' . $listlength[$ob - 2];
 			}
-			$answer = implode("\r\n", $final) . "\r\n" . "\r\n" . "Base $base; ragione $ratio; lunghezza $score0; $length caratteri";
+			$answer = implode("\r\n", $final) . "\r\n" . "\r\n" . "Base $base; ragione $ratio; lunghezza $score0; caratteri $length";
 			if (strlen($answer) > 4096) {
 				$answer = $base . "\r\n" . $ratio . "\r\n" . $score0 . "\r\n" . $length;
 			}
