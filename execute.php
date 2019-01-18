@@ -281,7 +281,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			if (strlen($answer) > 4096) {
 				$answer = $base . "\r\n" . $ratio . "\r\n" . $score0 . "\r\n" . $length;
 			}
-		} elseif(substr($text, 2, 2) == "+#") {
+		} elseif(substr($text, 2, 2) == '+#') {
 			$list = explode("\n", strtr($textmsc, $unstressed));
 			$ob = 1;
 			while (array_key_exists($ob, $list)) {
@@ -289,6 +289,11 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 				++$ob;
 			}
 			$lengthlist = array_count_values($listlength);
+			for($ob1 = 0; $ob1 < max(array_keys($lengthlist)); ++$ob1) {
+				if(!array_key_exists($ob1, $lengthlist)) {
+					$listlength[$ob1] = 0;
+				}
+			}
 			$score = max($lengthlist);
 			while(in_array($score, $lengthlist)) {
 				$score1 = array_search($score, $lengthlist);
@@ -298,7 +303,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			for($ob2 = 0; array_key_exists($ob2, $final); ++$ob2) {
 				$answer = $answer . $final[$ob2] . ":\n";
 				for($ob3 = 0; $ob3 < $ob; ++$ob3) {
-					if($strlen($list[$ob3]) == $final[$ob2]) {
+					if(strlen($list[$ob3]) == $final[$ob2]) {
 						$answer = $answer . $list[$ob3] . "\n";
 					}
 				}
