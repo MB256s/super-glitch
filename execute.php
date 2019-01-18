@@ -281,7 +281,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			if (strlen($answer) > 4096) {
 				$answer = $base . "\r\n" . $ratio . "\r\n" . $score0 . "\r\n" . $length;
 			}
-		} elseif(substr($text, 0, 2) == "+#" && strlen($text) > 7) {
+		} elseif(substr($text, 2, 2) == "+#") {
 			$list = explode("\n", strtr($textmsc, $unstressed));
 			$ob = 1;
 			while (array_key_exists($ob, $list)) {
