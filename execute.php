@@ -298,7 +298,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			while(in_array($score, $lengthlist)) {
 				$score1 = array_search($score, $lengthlist);
 				$final[] = $score1;
-				$lengthlist = $array_slice ($lengthlist, $score1 + 1, null, true);
+				$lengthlist = array_slice($lengthlist, $score1 + 1, null, true);
 			}
 			for($ob2 = 0; array_key_exists($ob2, $final); ++$ob2) {
 				$answer = $answer . $final[$ob2] . ":\n";
