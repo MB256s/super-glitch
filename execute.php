@@ -125,6 +125,7 @@ $greco = [
 '?' => ';',
 ];
 $card = ['n', 'a', '3', 'r', 'c', 'f', '7', '6', '5', '4', '2'];
+preg_match_all('!\d+!', $textmsc, $numbersinside);
 $commands = ['spam', 'moneta', 'vbsscript ', 'greco ', 'chiama '];
 $commcheck = false;
 for($obc = 0; $obc < count($commands); ++$obc) {
@@ -166,6 +167,20 @@ function CountSimilarities($name1, $name2) {
 		}
 	}
 	return array('score' => $scoring, 'points' => $finalsum);
+} function GCD($number1, $number2) {
+	if(gettype($number1) != "integer" || gettype($number2) != "integer" || $number1 * $number2 == 0) {
+		return false;
+	} else {
+		$a = max(abs($number1), abs($number2));
+		$b = min(abs($number1), abs($number2));
+		while($b != 0) {
+			$q = floor($a / $b);
+			$c = $b;
+			$b = $a - $q*$b;
+			$a = $c;
+		}
+		return $a;
+	}
 }
 $debug = ['*', '#', '/', '!'];
 $debug2 = ["*", "#", "/", "!", "&", ".", ",", ":", ";", "$", "?", "@", "€", "£", "'", "§"];
@@ -475,6 +490,17 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		$img = imagecreatetruecolor(432, 243);
 		$color = imagecolorallocate($img, $red, $green, $blue);
 		imagefill($img, 0, 0, $color);*/
+	} elseif(count($numbersinside) == 2 && $numbersinside[0]*$numbersinside[1] < 1048576 && GCD($numbersinside[0], $numbersinside[1]) == 1) {
+		if(($numbersinside[0] + $numbersinside[1]) % 2 == 1) {
+			$leg1 = abs($numbersinside[0]^2 - $numbersinside[1]^2);
+			$leg2 = 2*$numbersinside[0]*$numbersinside[1];
+			$hypothenuse = $numbersinside[0]^2 + $numbersinside[1]^2;
+		} else {
+			$leg1 = $numbersinside[0]*$numbersinside[1];
+			$leg2 = abs($numbersinside[0]^2 - $numbersinside[1]^2)/2;
+			$hypothenuse = ($numbersinside[0]^2 + $numbersinside[1]^2)/2;
+		}
+		$answer = '(' . min($leg1, $leg2) . ', ' . max($leg1, $leg2) . $hypothenuse . ') è una terna pitagorica primitiva';
 	} elseif($rand % 5 == 2 && $date % 10 == 7 && substr($text, 3, 1) == 'c') {
 		$answer = "Dettagli non disponibili";
 	} elseif($rand == 79) {
