@@ -125,7 +125,7 @@ $greco = [
 '?' => ';',
 ];
 $card = ['n', 'a', '3', 'r', 'c', 'f', '7', '6', '5', '4', '2'];
-$numbersinside = array_map("intval", explode(' ', preg_replace('/\s\s+/', ' ', preg_replace("/[^0-9]/", ' ', $textmsc))));
+$numbersinside = array_map("intval", explode(' ', trim(preg_replace('/\s\s+/', ' ', preg_replace("/[^0-9]/", ' ', $textmsc)))));
 $commands = ['spam', 'moneta', 'vbsscript ', 'greco ', 'chiama '];
 $commcheck = false;
 for($obc = 0; $obc < count($commands); ++$obc) {
@@ -492,13 +492,13 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 		imagefill($img, 0, 0, $color);*/
 	} elseif(count($numbersinside) == 2 && $numbersinside[0]*$numbersinside[1] < 1048576 && GCD($numbersinside[0], $numbersinside[1]) == 1) {
 		if(($numbersinside[0] + $numbersinside[1]) % 2 == 1) {
-			$leg1 = abs($numbersinside[0]^2 - $numbersinside[1]^2);
+			$leg1 = abs($numbersinside[0]**2 - $numbersinside[1]**2);
 			$leg2 = 2*$numbersinside[0]*$numbersinside[1];
-			$hypothenuse = $numbersinside[0]^2 + $numbersinside[1]^2;
+			$hypothenuse = $numbersinside[0]**2 + $numbersinside[1]**2;
 		} else {
 			$leg1 = $numbersinside[0]*$numbersinside[1];
-			$leg2 = abs($numbersinside[0]^2 - $numbersinside[1]^2)/2;
-			$hypothenuse = ($numbersinside[0]^2 + $numbersinside[1]^2)/2;
+			$leg2 = abs($numbersinside[0]**2 - $numbersinside[1]**2)/2;
+			$hypothenuse = ($numbersinside[0]**2 + $numbersinside[1]**2)/2;
 		}
 		$answer = '(' . min($leg1, $leg2) . ', ' . max($leg1, $leg2) . ', ' . $hypothenuse . ') è una terna pitagorica primitiva';
 	} elseif($rand % 5 == 2 && $date % 10 == 7 && substr($text, 3, 1) == 'c') {
