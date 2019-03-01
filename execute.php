@@ -283,7 +283,8 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			}
 		} elseif(substr($text, 2, 2) == '+#') {
 			$list = explode("\n", strtr($textmsc, $unstressed));
-			$ob = 1;
+			$list = array_slice($list, 1);
+			$ob = 0;
 			while (array_key_exists($ob, $list)) {
 				$listlength[] = strlen($list[$ob]);
 				++$ob;
@@ -291,9 +292,10 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			$lengthlist = array_count_values($listlength);
 			for($ob1 = 0; $ob1 < max(array_keys($lengthlist)); ++$ob1) {
 				if(!array_key_exists($ob1, $lengthlist)) {
-					$listlength[$ob1] = 0;
+					$lengthlist[$ob1] = 0;
 				}
 			}
+			ksort($lengthlist);
 			$score = max($lengthlist);
 			while(in_array($score, $lengthlist)) {
 				$score1 = array_search($score, $lengthlist);
