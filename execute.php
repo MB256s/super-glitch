@@ -125,7 +125,7 @@ $greco = [
 '?' => ';',
 ];
 $card = ['n', 'a', '3', 'r', 'c', 'f', '7', '6', '5', '4', '2'];
-preg_match_all('!\d+!', $textmsc, $numbersinside);
+$numbersinside = explode(' ', preg_replace('/\s\s+/', ' ', preg_replace("/[^0-9]/", ' ', $textmsc)));
 $commands = ['spam', 'moneta', 'vbsscript ', 'greco ', 'chiama '];
 $commcheck = false;
 for($obc = 0; $obc < count($commands); ++$obc) {
