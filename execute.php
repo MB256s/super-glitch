@@ -125,7 +125,7 @@ $greco = [
 '?' => ';',
 ];
 $card = ['n', 'a', '3', 'r', 'c', 'f', '7', '6', '5', '4', '2'];
-$numbersinside = explode(' ', preg_replace('/\s\s+/', ' ', preg_replace("/[^0-9]/", ' ', $textmsc)));
+$numbersinside = array_map("intval", explode(' ', preg_replace('/\s\s+/', ' ', preg_replace("/[^0-9]/", ' ', $textmsc))));
 $commands = ['spam', 'moneta', 'vbsscript ', 'greco ', 'chiama '];
 $commcheck = false;
 for($obc = 0; $obc < count($commands); ++$obc) {
@@ -500,7 +500,7 @@ if($date % 86400 == 43200 && $substr($text, 2, 2) == 'cr' && substr($text, 9, 1)
 			$leg2 = abs($numbersinside[0]^2 - $numbersinside[1]^2)/2;
 			$hypothenuse = ($numbersinside[0]^2 + $numbersinside[1]^2)/2;
 		}
-		$answer = '(' . min($leg1, $leg2) . ', ' . max($leg1, $leg2) . $hypothenuse . ') è una terna pitagorica primitiva';
+		$answer = '(' . min($leg1, $leg2) . ', ' . max($leg1, $leg2) . ', ' . $hypothenuse . ') è una terna pitagorica primitiva';
 	} elseif($rand % 5 == 2 && $date % 10 == 7 && substr($text, 3, 1) == 'c') {
 		$answer = "Dettagli non disponibili";
 	} elseif($rand == 79) {
